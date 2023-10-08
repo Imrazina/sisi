@@ -1,14 +1,11 @@
-import java.util.Random;
+import java.util.Scanner;
 
 public class App {
-    public static void main(String[] args) throws Exception {
-        System.out.println("Hello, World!");
-        System.out.println(10 + 2);
-        double dura = 12;
+    public static void main(String[] args){
+        Scanner scanner = new Scanner(System.in);
 
-        System.out.println(dura + 12);
+        String hueta = scanner.next();
 
-        Random random = new Random();
-        System.out.println("Some random value" + random.nextInt());
+        System.out.println(hueta);
     }
 }
