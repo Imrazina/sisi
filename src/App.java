@@ -1,3 +1,5 @@
+import java.security.PrivilegedAction;
+import java.util.List;
 import java.util.Scanner;
 
 public class App {
@@ -5,6 +7,7 @@ public class App {
   public static final String KVADRAT = "kvadrat";
   public static final String TREUHELNIK = "treuhelnik";
   public static final String KONUS = "konus";
+  private static final List<String> FIGURE_LIST = List.of(KVADRAT, TREUHELNIK, KONUS);
 
   public static void main(String[] args) {
 
@@ -13,6 +16,10 @@ public class App {
     Scanner input = new Scanner(System.in);
 
     String figure = input.nextLine();
+    while(!FIGURE_LIST.contains(figure)) {
+      System.out.println("Figure should be one of: " + KVADRAT + ", " + TREUHELNIK + " or " + KONUS + ", but not the: " + figure);
+      figure = input.nextLine();
+    }
 
     resolveFigure(figure, input);
   }
@@ -34,11 +41,39 @@ public class App {
     String find = input.nextLine();
     String otvet = "";
 
-    if (find.equals("2")) {
+    if (find.equals("1") && !figure.equals(KONUS)) {
+      otvet = findPerimetr(figure, input);
+    } else if (find.equals("1") && figure.equals(KONUS)) {
+      otvet = findStenuKonusa(input);
+    } else if (find.equals("2")) {
       otvet = findPloshad(figure, input);
     }
     
     System.out.println("You answer is: " + otvet);
+  }
+
+  private static String findStenuKonusa(Scanner input) {
+    System.out.print("Vysota konusa: ");
+    double vysotaKonusa = input.nextDouble();
+    System.out.print("Radius osnovania: ");
+    double radius = input.nextDouble();
+
+    return String.valueOf(Math.sqrt(radius * radius + vysotaKonusa * vysotaKonusa));
+  }
+
+  private static String findPerimetr(String figure, Scanner input) {
+    String otvet = "";
+    if (figure.equals(KVADRAT)) {
+      System.out.print("Storona kvadrata: ");
+      double storonaKvadrata = input.nextDouble();
+      otvet = String.valueOf(4*storonaKvadrata);
+    } else if (figure.equals(TREUHELNIK)) {
+      System.out.print("Storona treuhelnika: ");
+      double storonaTreuhelnika = input.nextDouble();
+      otvet = String.valueOf(3*storonaTreuhelnika);
+    }
+
+    return otvet;
   }
 
   private static String findPloshad(String figure, Scanner input) {
@@ -79,14 +114,6 @@ public class App {
    *
    *         System.out.println("Perimetr: " + 4 * d);
    *
-   *       } else if (find.equals("2")) {
-   *
-   *         System.out.println("Zadejte storonu " + KVADRAT + "a: ");
-   *
-   *         double f = input.nextDouble();
-   *
-   *         System.out.println("Ploshad: " + f * f);
-   *
    *       } else if (find.equals("3")) {
    *
    *         System.out.println("Zadejte storonu " + KVADRAT + "a: ");
@@ -111,24 +138,7 @@ public class App {
    *
    *         System.out.println("Perimetr: " + 3 * x);
    *
-   *       } else if (find.equals("2")) {
-   *
-   *         System.out.println("Zadejte storony " + TREUHELNIK + "a: ");
-   *
-   *         double z;
-   *         double p;
-   *         double r;
-   *         double t;
-   *
-   *         z = input.nextDouble();
-   *         r = input.nextDouble();
-   *         t = input.nextDouble();
-   *
-   *         poluPerimetr= (z + r + t) / 2;
-   *
-   *         System.out.println("Ploshad: " + (Math.sqrt((poluPerimetr* (poluPerimetr- z) * (poluPerimetr- r) * (poluPerimetr- t)))));
-   *
-   *       } else if (find.equals("3")) {
+   *       }else if (find.equals("3")) {
    *
    *         System.out.println("Zadejte storony " + TREUHELNIK + "a: ");
    *
@@ -175,19 +185,6 @@ public class App {
    *         h = input.nextDouble();
    *
    *         System.out.println(1 / 3 * pi * (u) * h);
-   *       } else if (parameter.equals("2")) {
-   *
-   *         int g;
-   *         int l;
-   *
-   *         System.out.println("zadejte parametry: ");
-   *
-   *         g = input.nextInt();
-   *
-   *         l = input.nextInt();
-   *
-   *         System.out.println(pi * (g * l));
-   *
    *       } else {
    *         System.out.println("error");
    *       }
